@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0a1628"/>
+      <stop offset="100%" stop-color="#050a12"/>
+    </radialGradient>
+    <radialGradient id="bloom" cx="50%" cy="60%" r="45%">
+      <stop offset="0%" stop-color="#00a8ff" stop-opacity="0.9"/>
+      <stop offset="30%" stop-color="#0066ff" stop-opacity="0.7"/>
+      <stop offset="60%" stop-color="#6600ff" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#330088" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bloom2" cx="30%" cy="40%" r="35%">
+      <stop offset="0%" stop-color="#00ddff" stop-opacity="0.5"/>
+      <stop offset="50%" stop-color="#0088ff" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0044aa" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bloom3" cx="70%" cy="70%" r="30%">
+      <stop offset="0%" stop-color="#ff00aa" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#8800ff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#4400aa" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <circle cx="960" cy="540" r="600" fill="url(#bloom)"/>
+  <circle cx="400" cy="350" r="400" fill="url(#bloom2)"/>
+  <circle cx="1500" cy="750" r="350" fill="url(#bloom3)"/>
+  <circle cx="960" cy="540" r="280" fill="#00ccff" opacity="0.08"/>
+  <circle cx="960" cy="540" r="150" fill="#00eeff" opacity="0.05"/>
+</svg>
