@@ -1,0 +1,16 @@
+services:
+  juanos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: juanos
+    restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=juanos.local
+      - VIRTUAL_PORT=3000
+    networks:
+      - proxy-net
+
+networks:
+  proxy-net:
+    external: true
