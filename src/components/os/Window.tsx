@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { WindowState } from "@/types/os";
 import { useOSStore } from "@/store/useOSStore";
 import { Minus, Square, Copy, X } from "lucide-react";
@@ -24,13 +24,13 @@ export default function Window({ window: win, children }: WindowProps) {
 
   const isFocused = activeWindowId === win.id;
   const windowRef = useRef<HTMLDivElement>(null);
-
+  const [isInteracting, setIsInteracting] = useState(false);
   if (!win.isOpen || win.isMinimized) return null;
 
   const handleTitlePointerDown = (e: React.PointerEvent) => {
     if (win.isMaximized || e.button !== 0) return;
     focusApp(win.id);
-
+    setIsInteracting(true);
     const startX = e.clientX;
     const startY = e.clientY;
     const startPosX = win.position.x;
@@ -45,8 +45,8 @@ export default function Window({ window: win, children }: WindowProps) {
     };
 
     const onPointerUp = () => {
+      setIsInteracting(false);
       window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerup", onPointerUp);
     };
 
     window.addEventListener("pointermove", onPointerMove);
@@ -56,7 +56,7 @@ export default function Window({ window: win, children }: WindowProps) {
   const handleResizePointerDown = (e: React.PointerEvent, direction: "se") => {
     e.stopPropagation();
     focusApp(win.id);
-
+    setIsInteracting(true);
     const startX = e.clientX;
     const startY = e.clientY;
     const startW = win.size.width;
@@ -71,8 +71,8 @@ export default function Window({ window: win, children }: WindowProps) {
     };
 
     const onPointerUp = () => {
+      setIsInteracting(false);
       window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerup", onPointerUp);
     };
 
     window.addEventListener("pointermove", onPointerMove);
@@ -83,10 +83,12 @@ export default function Window({ window: win, children }: WindowProps) {
     <div
       ref={windowRef}
       onPointerDown={() => focusApp(win.id)}
-      className={`absolute flex flex-col rounded-lg overflow-hidden transition-shadow duration-200 border ${
+      className={`absolute flex flex-col rounded-lg overflow-hidden border animate-fluent-open ${
+        isInteracting ? "win-dragging" : "win-transition"
+      } ${
         isFocused
-          ? "shadow-2xl border-white/30 ring-1 ring-white/20"
-          : "shadow-lg border-white/15 opacity-95"
+          ? "shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-white/25 ring-1 ring-white/20"
+          : "shadow-[0_10px_25px_rgba(0,0,0,0.4)] border-white/10 opacity-95"
       } ${win.isMaximized ? "inset-0 !w-full !h-[calc(100vh-48px)] rounded-none border-none" : ""}`}
       style={{
         zIndex: win.zIndex,

@@ -65,3 +65,77 @@ body {
   user-select: none;
   -webkit-user-select: none;
 }
+
+/* Fluent Motion Timing Functions */
+:root {
+  --fluent-bezier: cubic-bezier(0.1, 0.9, 0.2, 1);
+  --fluent-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* App Open Window Animation */
+@keyframes fluentWinOpen {
+  0% {
+    opacity: 0;
+    transform: scale(0.93) translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Start Menu Open Animation */
+@keyframes fluentStartOpen {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+/* Icon click spring pop */
+@keyframes iconSpring {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(0.88);
+  }
+  75% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-fluent-open {
+  animation: fluentWinOpen 0.24s var(--fluent-bezier) forwards;
+  transform-origin: center center;
+}
+
+.animate-fluent-start {
+  animation: fluentStartOpen 0.22s var(--fluent-bezier) forwards;
+}
+
+.animate-icon-click {
+  animation: iconSpring 0.3s var(--fluent-bezier);
+}
+
+.win-transition {
+  transition: width 0.25s var(--fluent-bezier),
+              height 0.25s var(--fluent-bezier),
+              left 0.25s var(--fluent-bezier),
+              top 0.25s var(--fluent-bezier),
+              box-shadow 0.2s ease,
+              opacity 0.2s ease,
+              border-color 0.2s ease;
+}
+
+/* Disable transition during drag to prevent cursor lag */
+.win-dragging {
+  transition: none !important;
+}

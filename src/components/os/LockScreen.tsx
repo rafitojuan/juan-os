@@ -37,7 +37,7 @@ export default function LockScreen() {
         backgroundImage: "url('/wallpapers/windows-11-lock.jpg')",
       }}
     >
-      <div className="flex flex-col items-center gap-2 pt-8">
+      <div className={`flex flex-col items-center gap-2 pt-8 transition-all duration-300 ${showAuth ? "-translate-y-2 scale-95 opacity-90" : ""}`}>
         <h1 data-testid="lock-clock" className="text-7xl md:text-8xl font-light tracking-tight">
           {timeStr}
         </h1>
@@ -47,7 +47,7 @@ export default function LockScreen() {
       </div>
 
       {showAuth ? (
-        <div className="flex flex-col items-center gap-4 animate-in fade-in zoom-in-95 duration-200">
+        <div className="flex flex-col items-center gap-4 animate-fluent-open">
           <div className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-white/40 bg-white/10 shadow-lg">
             <User className="h-12 w-12 text-white/90" />
           </div>
@@ -58,7 +58,7 @@ export default function LockScreen() {
               e.stopPropagation();
               unlock();
             }}
-            className="mt-2 rounded-md border border-white/30 bg-white/20 px-8 py-2 text-sm font-medium backdrop-blur transition hover:bg-white/30 active:scale-95"
+            className="mt-2 rounded-md border border-white/30 bg-white/20 px-8 py-2 text-sm font-medium backdrop-blur transition-all duration-200 hover:bg-white/30 hover:scale-105 active:scale-95 cursor-pointer shadow-lg"
           >
             Sign in
           </button>

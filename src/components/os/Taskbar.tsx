@@ -77,7 +77,7 @@ export default function Taskbar() {
           }}
           aria-label="Start"
           title="Start"
-          className={`w-10 h-10 flex items-center justify-center rounded-md transition-colors ${
+          className={`w-10 h-10 flex items-center justify-center rounded-md transition-all duration-150 active:scale-90 ${
             isStartOpen ? "bg-white/15" : "hover:bg-white/10"
           }`}
         >
@@ -100,20 +100,21 @@ export default function Taskbar() {
               key={app.id}
               onClick={() => handleAppClick(app.id)}
               title={app.title}
-              className={`relative w-10 h-10 flex items-center justify-center rounded-md transition-colors ${
+              className={`relative w-10 h-10 flex items-center justify-center rounded-md transition-all duration-150 active:scale-90 group cursor-pointer ${
                 isActive
-                  ? "bg-white/15"
+                  ? "bg-white/15 shadow-sm"
                   : isOpen
                   ? "bg-white/10 hover:bg-white/15"
                   : "hover:bg-white/10"
               }`}
             >
-              <div className="flex items-center justify-center">{getAppIcon(app.icon, "w-6 h-6")}</div>
-
+              <div className="flex items-center justify-center group-hover:scale-110 group-active:scale-90 transition-transform duration-150">
+                {getAppIcon(app.icon, "w-6 h-6")}
+              </div>
               {/* Running indicator pill/dot */}
               {isOpen && (
                 <div
-                  className={`absolute bottom-0.5 rounded-full transition-all ${
+                  className={`absolute bottom-0.5 rounded-full transition-all duration-200 ease-out ${
                     isActive
                       ? "w-4 h-1 bg-[#0078d4]"
                       : "w-1.5 h-1.5 bg-white/60"

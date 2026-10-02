@@ -63,7 +63,7 @@ export default function StartMenu() {
   return (
     <div
       data-testid="start-menu"
-      className="absolute bottom-14 left-1/2 -translate-x-1/2 w-[580px] max-w-[95vw] h-[600px] max-h-[80vh] bg-[#202020]/90 backdrop-blur-2xl border border-white/10 rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden text-white animate-in fade-in slide-in-from-bottom-4 duration-150 select-none"
+      className="absolute bottom-14 left-1/2 -translate-x-1/2 w-[580px] max-w-[95vw] h-[600px] max-h-[80vh] bg-[#202020]/92 backdrop-blur-2xl border border-white/15 rounded-xl shadow-[0_25px_60px_rgba(0,0,0,0.6)] z-50 flex flex-col overflow-hidden text-white animate-fluent-start select-none"
       onClick={(e) => e.stopPropagation()}
     >
       {/* Search Bar */}
@@ -97,12 +97,12 @@ export default function StartMenu() {
             <button
               key={app.id}
               onClick={() => handleAppClick(app)}
-              className="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white/10 transition-colors group text-center"
+              className="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white/10 active:scale-95 transition-all group text-center cursor-pointer"
             >
-              <div className="w-10 h-10 flex items-center justify-center group-hover:scale-105 transition-transform mb-1.5">
+              <div className="w-10 h-10 flex items-center justify-center group-hover:scale-110 group-active:scale-90 transition-transform mb-1.5">
                 {getAppIcon(app.icon, "w-8 h-8")}
               </div>
-              <span className="text-xs text-white/80 line-clamp-1 group-hover:text-white">
+              <span className="text-xs text-white/80 line-clamp-1 group-hover:text-white transition-colors">
                 {app.title}
               </span>
             </button>

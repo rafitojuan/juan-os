@@ -67,7 +67,7 @@ describe("Windows 11 Experience & Assets", () => {
     const terminalShortcut = screen.getByText("Terminal");
     fireEvent.doubleClick(terminalShortcut);
 
-    expect(screen.getByText(/Windows PowerShell/i)).toBeDefined();
+    expect(screen.getAllByText(/Windows PowerShell/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/juanOS Terminal/i)).toBeDefined();
   });
 

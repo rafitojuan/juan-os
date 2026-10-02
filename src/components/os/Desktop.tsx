@@ -74,9 +74,9 @@ export default function Desktop() {
               handleShortcutDoubleClick(app);
             }}
             onClick={(e) => e.stopPropagation()}
-            className="w-20 h-24 flex flex-col items-center justify-start gap-1 p-1 rounded hover:bg-white/10 hover:backdrop-blur-xs focus:bg-white/20 focus:border focus:border-white/30 text-center transition-all group cursor-pointer"
+            className="w-20 h-24 flex flex-col items-center justify-start gap-1 p-1 rounded hover:bg-white/10 hover:backdrop-blur-xs active:scale-90 focus:bg-white/20 focus:border focus:border-white/30 text-center transition-all duration-150 group cursor-pointer"
           >
-            <div className="w-12 h-12 flex items-center justify-center group-hover:scale-105 transition-transform drop-shadow-md">
+            <div className="w-12 h-12 flex items-center justify-center group-hover:scale-108 group-active:scale-90 transition-transform duration-150 drop-shadow-md">
               {getAppIcon(app.icon, "w-11 h-11")}
             </div>
             <span className="text-[11px] text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] font-normal line-clamp-2 leading-tight px-1 select-none">
