@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { WindowState } from "@/types/os";
 import { useOSStore } from "@/store/useOSStore";
 import { Minus, Square, Copy, X } from "lucide-react";
+import { getAppIcon } from "./StartMenu";
 
 interface WindowProps {
   window: WindowState;
@@ -104,7 +105,9 @@ export default function Window({ window: win, children }: WindowProps) {
         className="h-9 px-3 flex items-center justify-between select-none bg-white/5 border-b border-white/10 cursor-default"
       >
         <div className="flex items-center gap-2 text-xs font-normal text-white/90 truncate">
-          <span className="w-4 h-4 flex items-center justify-center">🪟</span>
+          <div className="w-4 h-4 flex items-center justify-center shrink-0">
+            {getAppIcon(win.icon, "w-4 h-4")}
+          </div>
           <span className="truncate">{win.title}</span>
         </div>
 

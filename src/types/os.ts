@@ -1,4 +1,13 @@
-export type AppType = "project" | "about" | "browser";
+export type AppType =
+  | "project"
+  | "about"
+  | "browser"
+  | "explorer"
+  | "settings"
+  | "terminal"
+  | "store"
+  | "bin"
+  | "calculator";
 
 export interface AppConfig {
   id: string;

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useOSStore } from "@/store/useOSStore";
-import { DEFAULT_APPS, PROJECTS } from "@/config/projects";
+import { DEFAULT_APPS, PROJECTS, SYSTEM_APPS } from "@/config/projects";
 import { getAppIcon } from "./StartMenu";
 import { Wifi, Volume2 } from "lucide-react";
 
@@ -40,7 +40,11 @@ export default function Taskbar() {
     return () => clearInterval(timer);
   }, []);
 
-  const pinnedApps = [...DEFAULT_APPS, ...PROJECTS];
+  const pinnedApps = [
+    ...DEFAULT_APPS,
+    ...PROJECTS,
+    ...SYSTEM_APPS.filter((a) => a.id !== "recycle-bin"),
+  ];
 
   const handleAppClick = (appId: string) => {
     const win = windows[appId];
@@ -77,16 +81,12 @@ export default function Taskbar() {
             isStartOpen ? "bg-white/15" : "hover:bg-white/10"
           }`}
         >
-          <svg
-            className="w-5 h-5 text-cyan-400"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <rect x="2" y="2" width="9" height="9" rx="1" />
-            <rect x="13" y="2" width="9" height="9" rx="1" />
-            <rect x="2" y="13" width="9" height="9" rx="1" />
-            <rect x="13" y="13" width="9" height="9" rx="1" />
-          </svg>
+          <img
+            src="/icons/windows.svg"
+            alt="Start"
+            className="w-5 h-5 object-contain select-none pointer-events-none drop-shadow-sm"
+            draggable={false}
+          />
         </button>
 
         {/* Pinned & Open Apps */}
@@ -108,14 +108,14 @@ export default function Taskbar() {
                   : "hover:bg-white/10"
               }`}
             >
-              <div className="text-cyan-400">{getAppIcon(app.icon, "w-5 h-5")}</div>
+              <div className="flex items-center justify-center">{getAppIcon(app.icon, "w-6 h-6")}</div>
 
               {/* Running indicator pill/dot */}
               {isOpen && (
                 <div
                   className={`absolute bottom-0.5 rounded-full transition-all ${
                     isActive
-                      ? "w-4 h-1 bg-cyan-400"
+                      ? "w-4 h-1 bg-[#0078d4]"
                       : "w-1.5 h-1.5 bg-white/60"
                   }`}
                 />

@@ -2,31 +2,45 @@
 
 import React, { useState } from "react";
 import { useOSStore } from "@/store/useOSStore";
-import { DEFAULT_APPS, PROJECTS } from "@/config/projects";
+import { DEFAULT_APPS, PROJECTS, SYSTEM_APPS } from "@/config/projects";
 import { AppConfig } from "@/types/os";
-import {
-  Search,
-  Lock,
-  User,
-  Globe,
-  Bot,
-  Timer,
-  AppWindow,
-} from "lucide-react";
+import { Search, Lock, AppWindow } from "lucide-react";
 
 export function getAppIcon(iconName: string, className = "w-6 h-6") {
-  switch (iconName) {
-    case "user":
-      return <User className={className} />;
-    case "globe":
-      return <Globe className={className} />;
-    case "bot":
-      return <Bot className={className} />;
-    case "timer":
-      return <Timer className={className} />;
-    default:
-      return <AppWindow className={className} />;
+  const iconSrc =
+    iconName?.startsWith("/")
+      ? iconName
+      : iconName === "user"
+      ? "/icons/notepad.png"
+      : iconName === "globe"
+      ? "/icons/edge.png"
+      : iconName === "bot"
+      ? "/icons/copilot.svg"
+      : iconName === "timer"
+      ? "/icons/alarm.png"
+      : iconName === "explorer"
+      ? "/icons/explorer.png"
+      : iconName === "settings"
+      ? "/icons/settings.png"
+      : iconName === "terminal"
+      ? "/icons/terminal.png"
+      : iconName === "store"
+      ? "/icons/store.png"
+      : iconName === "bin"
+      ? "/icons/bin.png"
+      : null;
+
+  if (iconSrc) {
+    return (
+      <img
+        src={iconSrc}
+        alt=""
+        className={`${className} object-contain select-none pointer-events-none drop-shadow-sm`}
+        draggable={false}
+      />
+    );
   }
+  return <AppWindow className={className} />;
 }
 
 export default function StartMenu() {
@@ -35,7 +49,7 @@ export default function StartMenu() {
 
   if (!isStartOpen) return null;
 
-  const allApps: AppConfig[] = [...DEFAULT_APPS, ...PROJECTS];
+  const allApps: AppConfig[] = [...DEFAULT_APPS, ...SYSTEM_APPS, ...PROJECTS];
   const filteredApps = searchQuery.trim()
     ? allApps.filter((app) =>
         app.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -85,8 +99,8 @@ export default function StartMenu() {
               onClick={() => handleAppClick(app)}
               className="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white/10 transition-colors group text-center"
             >
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-tr from-cyan-600/30 to-blue-600/30 flex items-center justify-center text-cyan-400 group-hover:scale-105 transition-transform mb-2">
-                {getAppIcon(app.icon, "w-5 h-5")}
+              <div className="w-10 h-10 flex items-center justify-center group-hover:scale-105 transition-transform mb-1.5">
+                {getAppIcon(app.icon, "w-8 h-8")}
               </div>
               <span className="text-xs text-white/80 line-clamp-1 group-hover:text-white">
                 {app.title}
@@ -100,9 +114,9 @@ export default function StartMenu() {
       <div className="h-14 bg-[#181818]/90 border-t border-white/10 px-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-cyan-600 flex items-center justify-center text-xs font-bold text-white shadow">
-            U
+            RJ
           </div>
-          <span className="text-sm font-medium text-white/90">USER</span>
+          <span className="text-sm font-medium text-white/90">Rafito Juan</span>
         </div>
 
         <button

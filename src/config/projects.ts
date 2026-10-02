@@ -4,10 +4,53 @@ export const DEFAULT_APPS: AppConfig[] = [
   {
     id: "about-me",
     title: "About Rafito Juan",
-    icon: "user",
+    icon: "/icons/notepad.png",
     appType: "about",
     description: "Bio, experiences, technical skills and contact info",
-    defaultSize: { width: 720, height: 540 },
+    defaultSize: { width: 750, height: 550 },
+  },
+];
+
+export const SYSTEM_APPS: AppConfig[] = [
+  {
+    id: "file-explorer",
+    title: "File Explorer",
+    icon: "/icons/explorer.png",
+    appType: "explorer",
+    description: "Browse files and juanOS projects",
+    defaultSize: { width: 840, height: 560 },
+  },
+  {
+    id: "settings",
+    title: "Settings",
+    icon: "/icons/settings.png",
+    appType: "settings",
+    description: "System preferences, personalization, and display settings",
+    defaultSize: { width: 860, height: 580 },
+  },
+  {
+    id: "terminal",
+    title: "Terminal",
+    icon: "/icons/terminal.png",
+    appType: "terminal",
+    description: "juanOS Command Prompt & Terminal",
+    defaultSize: { width: 780, height: 480 },
+  },
+  {
+    id: "microsoft-store",
+    title: "Microsoft Store",
+    icon: "/icons/store.png",
+    appType: "store",
+    description: "Discover tools, apps, and featured projects",
+    defaultSize: { width: 920, height: 600 },
+  },
+  {
+    id: "recycle-bin",
+    title: "Recycle Bin",
+    icon: "/icons/bin.png",
+    appType: "bin",
+    description: "Recycle bin and discarded elements",
+    defaultSize: { width: 740, height: 480 },
   },
 ];
 
@@ -15,7 +58,7 @@ export const PROJECTS: AppConfig[] = [
   {
     id: "portfolio-v2",
     title: "Portfolio v2",
-    icon: "globe",
+    icon: "/icons/edge.png",
     appType: "project",
     url: "https://rafitojuan.vercel.app",
     description: "Personal portfolio website v2",
@@ -25,7 +68,7 @@ export const PROJECTS: AppConfig[] = [
   {
     id: "juan-ai",
     title: "Juan AI Assistant",
-    icon: "bot",
+    icon: "/icons/copilot.svg",
     appType: "project",
     url: "https://juan-ai.vercel.app",
     description: "Interactive AI Chatbot assistant",
@@ -35,7 +78,7 @@ export const PROJECTS: AppConfig[] = [
   {
     id: "pomore",
     title: "Pomore Focus",
-    icon: "timer",
+    icon: "/icons/alarm.png",
     appType: "project",
     url: "https://pomore.vercel.app",
     description: "Productivity and Pomodoro timer application",

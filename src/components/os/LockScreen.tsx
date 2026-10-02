@@ -30,9 +30,12 @@ export default function LockScreen() {
       data-testid="lock-screen"
       onClick={() => setShowAuth(true)}
       aria-label="Lock screen"
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-between py-16 text-white select-none transition-all duration-500 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 ${
-        showAuth ? "backdrop-blur-xl bg-black/50" : ""
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-between py-16 text-white select-none transition-all duration-500 bg-cover bg-center ${
+        showAuth ? "backdrop-blur-xl bg-black/40" : ""
       }`}
+      style={{
+        backgroundImage: "url('/wallpapers/windows-11-lock.jpg')",
+      }}
     >
       <div className="flex flex-col items-center gap-2 pt-8">
         <h1 data-testid="lock-clock" className="text-7xl md:text-8xl font-light tracking-tight">
