@@ -16,19 +16,48 @@ import {
   Folder,
 } from "lucide-react";
 import { PROJECTS } from "@/config/projects";
+import { useOSStore } from "@/store/useOSStore";
 
 interface ProjectViewerProps {
   url?: string;
-  title: string;
+  title?: string;
 }
 
-export default function ProjectViewer({ url: initialUrl, title: initialTitle }: ProjectViewerProps) {
-  const [currentUrl, setCurrentUrl] = useState(initialUrl || "");
-  const [currentTitle, setCurrentTitle] = useState(initialTitle || "Microsoft Edge");
+export default function ProjectViewer({ url: initialUrl, title: initialTitle }: ProjectViewerProps = {}) {
+  const {
+    browserTabs,
+    activeTabId,
+    openBrowserTab,
+    closeBrowserTab,
+    setActiveBrowserTab,
+  } = useOSStore();
   const [iframeKey, setIframeKey] = useState(0);
   const [isBookmarked, setIsBookmarked] = useState(false);
 
-  if (!initialUrl && !currentUrl) {
+  const effectiveTabs =
+    browserTabs.length > 0
+      ? browserTabs
+      : initialUrl
+      ? [
+          {
+            id: "prop-tab",
+            title: initialTitle || "Microsoft Edge",
+            url: initialUrl,
+            icon: "/icons/edge.png",
+          },
+        ]
+      : [];
+
+  const effectiveActiveId =
+    activeTabId && effectiveTabs.some((t) => t.id === activeTabId)
+      ? activeTabId
+      : effectiveTabs[0]?.id || null;
+
+  const activeTab = effectiveTabs.find((t) => t.id === effectiveActiveId);
+  const currentUrl = activeTab?.url || initialUrl || "";
+  const currentTitle = activeTab?.title || initialTitle || "Microsoft Edge";
+
+  if (effectiveTabs.length === 0 && !initialUrl) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center text-white/60 p-6 bg-[#202020] h-full select-none">
         <ShieldAlert className="w-12 h-12 mb-2 text-yellow-400" />
@@ -36,37 +65,71 @@ export default function ProjectViewer({ url: initialUrl, title: initialTitle }: 
       </div>
     );
   }
-
-  const navigateTo = (url: string, title: string) => {
-    setCurrentUrl(url);
-    setCurrentTitle(title);
-    setIframeKey((k) => k + 1);
-  };
-
   return (
     <div className="flex-1 flex flex-col h-full bg-[#202020] text-white select-none font-sans overflow-hidden">
       {/* Edge Tab Bar */}
-      <div className="h-10 bg-[#181818] flex items-end px-2 pt-1 border-b border-black/40 gap-1 select-none">
-        {/* Active Tab */}
-        <div className="h-9 px-3 flex items-center gap-2 bg-[#2b2b2b] rounded-t-lg border-t border-x border-white/10 text-xs font-medium text-white max-w-[220px] shadow-sm">
-          <img src="/icons/edge.png" alt="" className="w-4 h-4 object-contain" />
-          <span className="truncate flex-1">{currentTitle}</span>
-          <button
-            className="w-4 h-4 rounded hover:bg-white/15 flex items-center justify-center text-white/60 hover:text-white"
-            title="Close tab"
-          >
-            <X className="w-3 h-3" />
-          </button>
-        </div>
+      <div
+        data-testid="browser-tab-bar"
+        className="h-10 bg-[#181818] flex items-end px-2 pt-1 border-b border-black/40 gap-1 select-none overflow-x-auto scrollbar-none"
+      >
+        {/* Tab list */}
+        {effectiveTabs.map((tab) => {
+          const isActive = tab.id === effectiveActiveId;
+          return (
+            <div
+              key={tab.id}
+              data-testid={`browser-tab-${tab.id}`}
+              onClick={() => setActiveBrowserTab(tab.id)}
+              className={`h-9 px-3 flex items-center gap-2 rounded-t-lg text-xs font-medium max-w-[220px] cursor-pointer transition-colors ${
+                isActive
+                  ? "bg-[#2b2b2b] text-white border-t border-x border-white/10 shadow-sm"
+                  : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white"
+              }`}
+            >
+              <img
+                src={tab.icon || "/icons/edge.png"}
+                alt=""
+                className="w-4 h-4 object-contain shrink-0"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = "/icons/edge.png";
+                }}
+              />
+              <span className="truncate flex-1">{tab.title}</span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeBrowserTab(tab.id);
+                }}
+                aria-label="Close tab"
+                title="Close tab"
+                className="w-4 h-4 rounded hover:bg-white/15 flex items-center justify-center text-white/60 hover:text-white"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          );
+        })}
 
         {/* New Tab Button */}
         <button
-          className="w-7 h-7 mb-1 flex items-center justify-center rounded-md hover:bg-white/10 text-white/60 hover:text-white transition-colors"
+          onClick={() => {
+            const unopened = PROJECTS.find((p) => !browserTabs.some((t) => t.id === p.id));
+            const toOpen = unopened || PROJECTS[0];
+            if (toOpen) {
+              openBrowserTab({
+                id: toOpen.id,
+                title: toOpen.title,
+                url: toOpen.url || "",
+                icon: toOpen.icon,
+              });
+            }
+          }}
+          className="w-7 h-7 mb-1 flex items-center justify-center rounded-md hover:bg-white/10 text-white/60 hover:text-white transition-colors cursor-pointer shrink-0"
           title="New tab"
+          aria-label="New tab"
         >
           <Plus className="w-4 h-4" />
         </button>
-
         <div className="flex-1" />
 
         {/* Edge Action Icons Right */}
@@ -140,7 +203,16 @@ export default function ProjectViewer({ url: initialUrl, title: initialTitle }: 
         {PROJECTS.map((proj) => (
           <button
             key={proj.id}
-            onClick={() => proj.url && navigateTo(proj.url, proj.title)}
+            onClick={() => {
+              if (proj.url) {
+                openBrowserTab({
+                  id: proj.id,
+                  title: proj.title,
+                  url: proj.url,
+                  icon: proj.icon,
+                });
+              }
+            }}
             className={`flex items-center gap-1.5 px-2 py-0.5 rounded hover:bg-white/10 transition-colors cursor-pointer truncate max-w-[160px] ${
               currentUrl === proj.url ? "text-cyan-400 font-medium bg-white/5" : "text-white/80"
             }`}
@@ -153,14 +225,16 @@ export default function ProjectViewer({ url: initialUrl, title: initialTitle }: 
 
       {/* Embedded Web Page */}
       <div className="flex-1 relative bg-white">
-        <iframe
-          key={iframeKey}
-          src={currentUrl}
-          title={currentTitle}
-          className="w-full h-full border-none"
-          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-        />
-      </div>
+        {effectiveTabs.map((tab) => (
+          <iframe
+            key={`${tab.id}-${tab.id === effectiveActiveId ? iframeKey : 0}`}
+            src={tab.url}
+            title={tab.title}
+            className={`w-full h-full border-none ${tab.id === effectiveActiveId ? "block" : "hidden"}`}
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+          />
+        ))}
     </div>
+      </div>
   );
 }

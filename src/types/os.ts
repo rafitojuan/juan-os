@@ -35,3 +35,10 @@ export interface WindowState {
   prevPosition?: { x: number; y: number };
   prevSize?: { width: number; height: number };
 }
+
+export interface BrowserTab {
+  id: string;
+  title: string;
+  url: string;
+  icon?: string;
+}

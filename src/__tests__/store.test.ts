@@ -10,6 +10,8 @@ describe("OS Store", () => {
       windows: {},
       activeWindowId: null,
       highestZIndex: 10,
+      browserTabs: [],
+      activeTabId: null,
     });
   });
 
@@ -21,13 +23,12 @@ describe("OS Store", () => {
     expect(useOSStore.getState().isLocked).toBe(true);
   });
 
-  it("opens an application as a new window with proper zIndex", () => {
+  it("opens a non-project application as a new window with proper zIndex", () => {
     const app: AppConfig = {
       id: "test-app",
       title: "Test App",
-      icon: "globe",
-      appType: "project",
-      url: "https://example.com",
+      icon: "notepad",
+      appType: "about",
       defaultSize: { width: 800, height: 600 },
     };
 
@@ -42,12 +43,75 @@ describe("OS Store", () => {
     expect(win.zIndex).toBe(11);
   });
 
+  it("consolidates project apps into a single browser window with tabs", () => {
+    const pomore: AppConfig = {
+      id: "pomore",
+      title: "Pomore Focus",
+      icon: "/icons/alarm.png",
+      appType: "project",
+      url: "https://pomore.rafitojuan.my.id",
+    };
+    const portfolio: AppConfig = {
+      id: "portfolio-v2",
+      title: "Portfolio v2",
+      icon: "/icons/edge.png",
+      appType: "project",
+      url: "https://portfolio.rafitojuan.my.id",
+    };
+
+    // Open first project -> creates browser window
+    useOSStore.getState().openApp(pomore);
+    let state = useOSStore.getState();
+
+    expect(state.windows["pomore"]).toBeUndefined();
+    expect(state.windows["browser"]).toBeDefined();
+    expect(state.windows["browser"].isOpen).toBe(true);
+    expect(state.windows["browser"].title).toBe("Pomore Focus - Microsoft Edge");
+    expect(state.activeWindowId).toBe("browser");
+    expect(state.browserTabs).toHaveLength(1);
+    expect(state.browserTabs[0].id).toBe("pomore");
+    expect(state.browserTabs[0].url).toBe("https://pomore.rafitojuan.my.id");
+    expect(state.activeTabId).toBe("pomore");
+
+    // Open second project -> reuses browser window, adds tab, updates active tab
+    useOSStore.getState().openApp(portfolio);
+    state = useOSStore.getState();
+
+    expect(state.windows["portfolio-v2"]).toBeUndefined();
+    expect(state.windows["browser"]).toBeDefined();
+    expect(state.browserTabs).toHaveLength(2);
+    expect(state.browserTabs[1].id).toBe("portfolio-v2");
+    expect(state.activeTabId).toBe("portfolio-v2");
+    expect(state.windows["browser"].title).toBe("Portfolio v2 - Microsoft Edge");
+
+    // Switch active tab
+    useOSStore.getState().setActiveBrowserTab("pomore");
+    state = useOSStore.getState();
+    expect(state.activeTabId).toBe("pomore");
+    expect(state.windows["browser"].title).toBe("Pomore Focus - Microsoft Edge");
+
+    // Close one tab -> 1 tab remains, browser stays open
+    useOSStore.getState().closeBrowserTab("pomore");
+    state = useOSStore.getState();
+    expect(state.browserTabs).toHaveLength(1);
+    expect(state.browserTabs[0].id).toBe("portfolio-v2");
+    expect(state.activeTabId).toBe("portfolio-v2");
+    expect(state.windows["browser"].isOpen).toBe(true);
+
+    // Close last tab -> browser closes and resets
+    useOSStore.getState().closeBrowserTab("portfolio-v2");
+    state = useOSStore.getState();
+    expect(state.browserTabs).toHaveLength(0);
+    expect(state.activeTabId).toBeNull();
+    expect(state.windows["browser"].isOpen).toBe(false);
+    expect(state.activeWindowId).toBeNull();
+  });
   it("minimizes, maximizes, and closes a window", () => {
     const app: AppConfig = {
       id: "app-1",
       title: "App 1",
       icon: "globe",
-      appType: "project",
+      appType: "about",
     };
 
     useOSStore.getState().openApp(app);

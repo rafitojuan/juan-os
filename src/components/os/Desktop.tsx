@@ -47,6 +47,9 @@ export default function Desktop() {
         return <StoreApp />;
       case "bin":
         return <RecycleBinApp />;
+      case "browser":
+      case "project":
+        return <ProjectViewer />;
       default:
         return <ProjectViewer url={win.url} title={win.title} />;
     }
@@ -63,10 +66,10 @@ export default function Desktop() {
       }}
     >
       {/* Desktop shortcuts grid */}
-      <div className="p-4 grid grid-flow-col grid-rows-6 gap-4 w-max h-[calc(100vh-48px)]">
+      <div data-testid="desktop-shortcuts" className="p-4 grid grid-flow-col grid-rows-6 gap-4 w-max h-[calc(100vh-48px)]">
         {desktopShortcuts.map((app) => (
           <button
-            key={app.id}
+            data-testid={`desktop-shortcut-${app.id}`}
             onDoubleClick={(e) => {
               e.stopPropagation();
               handleShortcutDoubleClick(app);

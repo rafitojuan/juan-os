@@ -78,3 +78,12 @@ export const PROJECTS: AppConfig[] = [
     defaultSize: { width: 800, height: 540 },
   },
 ];
+
+export const BROWSER_APP: AppConfig = {
+  id: "browser",
+  title: "Microsoft Edge",
+  icon: "/icons/edge.png",
+  appType: "browser",
+  description: "Web browser for juanOS projects and web pages",
+  defaultSize: { width: 960, height: 600 },
+};

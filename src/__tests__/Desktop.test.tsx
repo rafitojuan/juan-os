@@ -12,6 +12,8 @@ describe("Desktop Component", () => {
       windows: {},
       activeWindowId: null,
       highestZIndex: 10,
+      browserTabs: [],
+      activeTabId: null,
     });
   });
 
@@ -81,5 +83,34 @@ describe("Desktop Component", () => {
     fireEvent.click(lockBtn);
 
     expect(useOSStore.getState().isLocked).toBe(true);
+  });
+
+  it("double-clicking project shortcuts opens browser window with tabs", () => {
+    render(<Desktop />);
+
+    const pomoreShortcut = screen.getByTestId("desktop-shortcut-pomore");
+    fireEvent.doubleClick(pomoreShortcut);
+
+    let state = useOSStore.getState();
+    expect(state.windows["browser"]).toBeDefined();
+    expect(state.windows["browser"].isOpen).toBe(true);
+    expect(state.windows["pomore"]).toBeUndefined();
+    expect(state.browserTabs).toHaveLength(1);
+    expect(state.browserTabs[0].id).toBe("pomore");
+
+    // Double-click another project shortcut
+    const portfolioShortcut = screen.getByTestId("desktop-shortcut-portfolio-v2");
+    fireEvent.doubleClick(portfolioShortcut);
+
+    state = useOSStore.getState();
+    expect(state.windows["portfolio-v2"]).toBeUndefined();
+    expect(state.browserTabs).toHaveLength(2);
+    expect(state.browserTabs[1].id).toBe("portfolio-v2");
+    expect(state.activeTabId).toBe("portfolio-v2");
+
+    // Verify browser window is rendered with tab bar
+    expect(screen.getByTestId("browser-tab-bar")).toBeDefined();
+    expect(screen.getByTestId("browser-tab-pomore")).toBeDefined();
+    expect(screen.getByTestId("browser-tab-portfolio-v2")).toBeDefined();
   });
 });
