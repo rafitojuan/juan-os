@@ -67,7 +67,6 @@ export default function StoreApp() {
         </div>
 
         <div className="hidden sm:flex flex-col gap-1 p-2 rounded-lg bg-white/5 text-[10px] text-white/50">
-          <span className="text-white/80 font-medium">juanOS Store v2.4</span>
           <span>Verified developer profile</span>
         </div>
       </aside>

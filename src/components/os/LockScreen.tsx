@@ -51,7 +51,7 @@ export default function LockScreen() {
           <div className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-white/40 bg-white/10 shadow-lg">
             <User className="h-12 w-12 text-white/90" />
           </div>
-          <span className="text-2xl font-semibold tracking-wide">USER</span>
+          <span className="text-2xl font-semibold tracking-wide">Rafito Juan</span>
           <button
             type="button"
             onClick={(e) => {

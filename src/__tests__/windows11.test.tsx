@@ -21,13 +21,11 @@ describe("Windows 11 Experience & Assets", () => {
     const settings = SYSTEM_APPS.find((a) => a.id === "settings");
     const terminal = SYSTEM_APPS.find((a) => a.id === "terminal");
     const store = SYSTEM_APPS.find((a) => a.id === "microsoft-store");
-    const bin = SYSTEM_APPS.find((a) => a.id === "recycle-bin");
 
     expect(explorer?.icon).toBe("/icons/explorer.png");
     expect(settings?.icon).toBe("/icons/settings.png");
     expect(terminal?.icon).toBe("/icons/terminal.png");
     expect(store?.icon).toBe("/icons/store.png");
-    expect(bin?.icon).toBe("/icons/bin.png");
   });
 
   it("getAppIcon renders an img element for asset paths and legacy names", () => {
@@ -42,10 +40,10 @@ describe("Windows 11 Experience & Assets", () => {
     expect(legacyImg?.getAttribute("src")).toBe("/icons/edge.png");
   });
 
-  it("renders desktop shortcuts including Recycle Bin and File Explorer", () => {
+  it("renders desktop shortcuts without Recycle Bin and with File Explorer", () => {
     render(<Desktop />);
 
-    expect(screen.getByText("Recycle Bin")).toBeDefined();
+    expect(screen.queryByText("Recycle Bin")).toBeNull();
     expect(screen.getByText("File Explorer")).toBeDefined();
     expect(screen.getByText("Terminal")).toBeDefined();
     expect(screen.getByText("Settings")).toBeDefined();

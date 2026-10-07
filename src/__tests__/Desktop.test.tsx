@@ -45,9 +45,15 @@ describe("Desktop Component", () => {
     expect(startBtn).toBeDefined();
 
     // Verify pinned apps exist on taskbar
-    const pinnedApps = [...DEFAULT_APPS, ...PROJECTS];
-    pinnedApps.forEach((app) => {
-      expect(screen.getAllByTitle(app.title).length).toBeGreaterThan(0);
+    expect(screen.getByTitle("File Explorer")).toBeDefined();
+    expect(screen.getByTitle("Settings")).toBeDefined();
+    expect(screen.getByTitle("Microsoft Store")).toBeDefined();
+
+    // Verify other apps are not on taskbar when closed
+    expect(screen.queryByTitle("Terminal")).toBeNull();
+    expect(screen.queryByTitle("About Rafito Juan")).toBeNull();
+    PROJECTS.forEach((p) => {
+      expect(screen.queryByTitle(p.title)).toBeNull();
     });
   });
 

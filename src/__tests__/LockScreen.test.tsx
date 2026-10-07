@@ -23,15 +23,15 @@ describe("LockScreen", () => {
     expect(screen.getByTestId("lock-date")).toBeDefined();
   });
 
-  it("reveals 'USER' and 'Sign in' button on click", () => {
+  it("reveals 'Rafito Juan' and 'Sign in' button on click", () => {
     render(<LockScreen />);
 
-    expect(screen.queryByText("USER")).toBeNull();
+    expect(screen.queryByText("Rafito Juan")).toBeNull();
     expect(screen.queryByRole("button", { name: /sign in/i })).toBeNull();
 
     fireEvent.click(screen.getByTestId("lock-screen"));
 
-    expect(screen.getByText("USER")).toBeDefined();
+    expect(screen.getByText("Rafito Juan")).toBeDefined();
     expect(screen.getByRole("button", { name: /sign in/i })).toBeDefined();
   });
 

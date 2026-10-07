@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useOSStore } from "@/store/useOSStore";
-import { DEFAULT_APPS, PROJECTS, SYSTEM_APPS } from "@/config/projects";
+import { SYSTEM_APPS } from "@/config/projects";
+import { AppConfig } from "@/types/os";
 import { getAppIcon } from "./StartMenu";
 import { Wifi, Volume2 } from "lucide-react";
 
@@ -40,11 +41,22 @@ export default function Taskbar() {
     return () => clearInterval(timer);
   }, []);
 
-  const pinnedApps = [
-    ...DEFAULT_APPS,
-    ...PROJECTS,
-    ...SYSTEM_APPS.filter((a) => a.id !== "recycle-bin"),
-  ];
+  const PINNED_APP_IDS = ["file-explorer", "settings", "microsoft-store"];
+  const pinnedApps = PINNED_APP_IDS.map((id) =>
+    SYSTEM_APPS.find((a) => a.id === id)
+  ).filter((app): app is AppConfig => Boolean(app));
+
+  const runningUnpinnedApps: AppConfig[] = Object.values(windows)
+    .filter((win) => win.isOpen && !PINNED_APP_IDS.includes(win.id))
+    .map((win) => ({
+      id: win.id,
+      title: win.title,
+      icon: win.icon,
+      appType: win.appType,
+      url: win.url,
+    }));
+
+  const taskbarApps = [...pinnedApps, ...runningUnpinnedApps];
 
   const handleAppClick = (appId: string) => {
     const win = windows[appId];
@@ -90,7 +102,7 @@ export default function Taskbar() {
         </button>
 
         {/* Pinned & Open Apps */}
-        {pinnedApps.map((app) => {
+        {taskbarApps.map((app) => {
           const win = windows[app.id];
           const isOpen = win?.isOpen ?? false;
           const isActive = activeWindowId === app.id && isOpen && !win?.isMinimized;

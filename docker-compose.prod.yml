@@ -3,18 +3,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: dev
+      target: runner
     container_name: juanos
     restart: unless-stopped
     environment:
-      - NODE_ENV=development
-      - WATCHPACK_POLLING=true
+      - NODE_ENV=production
       - VIRTUAL_HOST=juanos.local
       - VIRTUAL_PORT=3000
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/.next
     networks:
       - proxy-net
 

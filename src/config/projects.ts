@@ -44,14 +44,6 @@ export const SYSTEM_APPS: AppConfig[] = [
     description: "Discover tools, apps, and featured projects",
     defaultSize: { width: 920, height: 600 },
   },
-  {
-    id: "recycle-bin",
-    title: "Recycle Bin",
-    icon: "/icons/bin.png",
-    appType: "bin",
-    description: "Recycle bin and discarded elements",
-    defaultSize: { width: 740, height: 480 },
-  },
 ];
 
 export const PROJECTS: AppConfig[] = [
@@ -60,7 +52,7 @@ export const PROJECTS: AppConfig[] = [
     title: "Portfolio v2",
     icon: "/icons/edge.png",
     appType: "project",
-    url: "https://rafitojuan.vercel.app",
+    url: "https://portfolio.rafitojuan.my.id",
     description: "Personal portfolio website v2",
     tags: ["Svelte", "TailwindCSS", "Vite"],
     defaultSize: { width: 960, height: 600 },
@@ -70,7 +62,7 @@ export const PROJECTS: AppConfig[] = [
     title: "Juan AI Assistant",
     icon: "/icons/copilot.svg",
     appType: "project",
-    url: "https://juan-ai.vercel.app",
+    url: "https://ai.rafitojuan.my.id",
     description: "Interactive AI Chatbot assistant",
     tags: ["Next.js", "OpenAI", "TailwindCSS"],
     defaultSize: { width: 900, height: 620 },
@@ -80,7 +72,7 @@ export const PROJECTS: AppConfig[] = [
     title: "Pomore Focus",
     icon: "/icons/alarm.png",
     appType: "project",
-    url: "https://pomore.vercel.app",
+    url: "https://pomore.rafitojuan.my.id",
     description: "Productivity and Pomodoro timer application",
     tags: ["React", "TypeScript", "PWA"],
     defaultSize: { width: 800, height: 540 },

@@ -17,13 +17,11 @@ import RecycleBinApp from "@/components/apps/RecycleBinApp";
 export default function Desktop() {
   const { windows, openApp, closeStartMenu } = useOSStore();
 
-  const recycleBinApp = SYSTEM_APPS.find((a) => a.id === "recycle-bin");
   const fileExplorerApp = SYSTEM_APPS.find((a) => a.id === "file-explorer");
   const terminalApp = SYSTEM_APPS.find((a) => a.id === "terminal");
   const settingsApp = SYSTEM_APPS.find((a) => a.id === "settings");
 
   const desktopShortcuts: AppConfig[] = [
-    ...(recycleBinApp ? [recycleBinApp] : []),
     ...(fileExplorerApp ? [fileExplorerApp] : []),
     ...DEFAULT_APPS,
     ...PROJECTS,
